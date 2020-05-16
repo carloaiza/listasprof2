@@ -5,6 +5,8 @@
  */
 package com.listase.modelo;
 
+import com.listaenlazada.modelo.Infante;
+
 /**
  *
  * @author carloaiza

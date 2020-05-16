@@ -14,6 +14,9 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractFacade<T> {
 
+    //Facade o Fachada
+    //Dao = Data Access Object
+    
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {

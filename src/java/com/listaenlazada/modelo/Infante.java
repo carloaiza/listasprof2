@@ -135,7 +135,7 @@ public class Infante implements Serializable {
 
     @Override
     public String toString() {
-        return "com.listaenlazada.modelo.Infante[ codigo=" + codigo + " ]";
+        return this.nombre;
     }
     
 }

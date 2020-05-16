@@ -5,8 +5,10 @@
  */
 package com.listase.controlador;
 
+import com.listaenlazada.controlador.InfanteFacade;
 import com.listase.excepciones.InfanteExcepcion;
-import com.listase.modelo.Infante;
+//import com.listase.modelo.Infante;
+import com.listaenlazada.modelo.Infante;
 import com.listase.modelo.ListaSE;
 import com.listase.modelo.Nodo;
 import com.listase.utilidades.JsfUtil;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
@@ -44,7 +47,7 @@ public class SesionInfante implements Serializable {
     private Nodo ayudante;   
     private String textoVista="Gráfico";
     
-    private List listadoInfantes;
+    private List<Infante> listadoInfantes;
     
     private DefaultDiagramModel model;
     
@@ -58,6 +61,9 @@ public class SesionInfante implements Serializable {
     
     private Infante infanteDiagrama;
     
+    @EJB
+    private InfanteFacade connInfante;
+    
     /**
      * Creates a new instance of SesionInfante
      */
@@ -65,26 +71,41 @@ public class SesionInfante implements Serializable {
     }
     
     @PostConstruct
-    private void inicializar()
+    public void inicializar()
     {
         controlLocalidades = new ControladorLocalidades();
         //inicializando el combo en el primer depto
         codigoDeptoSel = controlLocalidades.getDepartamentos().get(0).getCodigo();
         
-        listaInfantes = new ListaSE();        
+        listaInfantes = new ListaSE();
+
+        listadoInfantes=connInfante.findAll();
+        //recorrer el listado y envio el infante a laista SE
+        for(Infante inf:listadoInfantes)
+        {
+            listaInfantes.adicionarNodo(inf);
+        }
+        
         //LLenado de la bds
-        listaInfantes.adicionarNodo(new Infante("Carlitos",(short) 1, (byte)2, true,
-                controlLocalidades.getCiudades().get(0).getNombre()));
-        listaInfantes.adicionarNodo(new Infante("Juanita",(short) 2, (byte)3, false,
-        controlLocalidades.getCiudades().get(3).getNombre()));
-        listaInfantes.adicionarNodo(new Infante("Martina",(short) 3, (byte)1,false,
-        controlLocalidades.getCiudades().get(1).getNombre()));
-        listaInfantes.adicionarNodoAlInicio(new Infante("Mariana",(short) 4, (byte)5,false,
-        controlLocalidades.getCiudades().get(2).getNombre()));
-        ayudante = listaInfantes.getCabeza();
-        infante = ayudante.getDato();     
+//        listaInfantes.adicionarNodo(new Infante("Carlitos",(short) 1, (byte)2, true,
+//                controlLocalidades.getCiudades().get(0).getNombre()));
+//        listaInfantes.adicionarNodo(new Infante("Juanita",(short) 2, (byte)3, false,
+//        controlLocalidades.getCiudades().get(3).getNombre()));
+//        listaInfantes.adicionarNodo(new Infante("Martina",(short) 3, (byte)1,false,
+//        controlLocalidades.getCiudades().get(1).getNombre()));
+//        listaInfantes.adicionarNodoAlInicio(new Infante("Mariana",(short) 4, (byte)5,false,
+//        controlLocalidades.getCiudades().get(2).getNombre()));
+        if(listaInfantes.getCabeza()!=null)
+        {
+            ayudante = listaInfantes.getCabeza();
+            infante = ayudante.getDato();     
+        }
+        else
+        {
+            infante = new Infante();
+        }
         //Me llena el objeto List para la tabla
-        listadoInfantes = listaInfantes.obtenerListaInfantes();
+        //listadoInfantes = listaInfantes.obtenerListaInfantes();
         pintarLista();
    }
 
@@ -163,7 +184,8 @@ public class SesionInfante implements Serializable {
 
     
     
-    public List getListadoInfantes() {
+    public List getListadoInfantes() {        
+        inicializar();
         return listadoInfantes;
     }
 
@@ -222,7 +244,9 @@ public class SesionInfante implements Serializable {
         else
         {
             listaInfantes.adicionarNodo(infante);
-        }  
+        }
+        //Guardo en bds
+        connInfante.create(infante);
         //Vuelvo a llenar la lista para la tabla
         listadoInfantes = listaInfantes.obtenerListaInfantes();
         pintarLista();
@@ -353,7 +377,10 @@ public class SesionInfante implements Serializable {
         {
             //llamo el eliminar de la lista
             try{
+                connInfante.remove(listaInfantes.obtenerInfante(codigoEliminar));
                 listaInfantes.eliminarInfante(codigoEliminar);
+                //Eliminamos de bds
+                
                 irPrimero();
                 JsfUtil.addSuccessMessage("Infante "+codigoEliminar +" eliminado.");
             }

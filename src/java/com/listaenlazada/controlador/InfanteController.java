@@ -74,9 +74,9 @@ public class InfanteController implements Serializable {
     }
 
     public List<Infante> getItems() {
-        if (items == null) {
+        //if (items == null) {
             items = getFacade().findAll();
-        }
+        //}
         return items;
     }
 

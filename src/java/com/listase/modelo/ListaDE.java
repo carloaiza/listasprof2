@@ -9,6 +9,7 @@ import com.listase.excepciones.InfanteExcepcion;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import com.listaenlazada.modelo.Infante;
 
 /**
  *
@@ -198,7 +199,7 @@ public class ListaDE implements Serializable {
             NodoDE temp = cabeza;
             short cont = 0;
             while (temp != null) {
-                if (temp.getDato().isGenero() == genero) {
+                if (temp.getDato().getGenero() == genero) {
                     cont++;
                 }
                 temp = temp.getSiguiente();

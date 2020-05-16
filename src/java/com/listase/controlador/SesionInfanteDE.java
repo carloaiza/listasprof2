@@ -6,7 +6,8 @@
 package com.listase.controlador;
 
 import com.listase.excepciones.InfanteExcepcion;
-import com.listase.modelo.Infante;
+//import com.listase.modelo.Infante;
+import com.listaenlazada.modelo.Infante;
 import com.listase.modelo.ListaDE;
 import com.listase.modelo.ListaSE;
 import com.listase.modelo.Nodo;
@@ -80,16 +81,16 @@ public class SesionInfanteDE implements Serializable {
         
         listaInfantes = new ListaDE();        
         //LLenado de la bds
-        listaInfantes.adicionarNodo(new Infante("Carlitos",(short) 1, (byte)2, true,
-                controlLocalidades.getCiudades().get(0).getNombre()));
-        listaInfantes.adicionarNodo(new Infante("Juanita",(short) 2, (byte)3, false,
-        controlLocalidades.getCiudades().get(3).getNombre()));
-        listaInfantes.adicionarNodo(new Infante("Martina",(short) 3, (byte)1,false,
-        controlLocalidades.getCiudades().get(1).getNombre()));
-        listaInfantes.adicionarNodoAlInicio(new Infante("Mariana",(short) 4, (byte)5,false,
-        controlLocalidades.getCiudades().get(2).getNombre()));
-        ayudante = listaInfantes.getCabeza();
-        infante = ayudante.getDato();     
+//        listaInfantes.adicionarNodo(new Infante("Carlitos",(short) 1, (byte)2, true,
+//                controlLocalidades.getCiudades().get(0).getNombre()));
+//        listaInfantes.adicionarNodo(new Infante("Juanita",(short) 2, (byte)3, false,
+//        controlLocalidades.getCiudades().get(3).getNombre()));
+//        listaInfantes.adicionarNodo(new Infante("Martina",(short) 3, (byte)1,false,
+//        controlLocalidades.getCiudades().get(1).getNombre()));
+//        listaInfantes.adicionarNodoAlInicio(new Infante("Mariana",(short) 4, (byte)5,false,
+//        controlLocalidades.getCiudades().get(2).getNombre()));
+//        ayudante = listaInfantes.getCabeza();
+//        infante = ayudante.getDato();     
         //Me llena el objeto List para la tabla
         listadoInfantes = listaInfantes.obtenerListaInfantes();
         pintarLista();
